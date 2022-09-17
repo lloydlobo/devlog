@@ -1,0 +1,102 @@
+#+TITLE: devlog
+#+AUTHOR: lloydlobo
+#+DESCRIPTION: Developer Log Notes
+#+STARTUP: overview
+#+OPTIONS: num:nil ^:{}
+# #+PROPERTY: header-args :tangle yes :results none
+-----
+
+* TABLE OF CONTENTS :toc:
+- [[#backend][BACKEND]]
+  - [[#express][EXPRESS]]
+  - [[#go][GO]]
+  - [[#nodejs][NODEJS]]
+- [[#database][DATABASE]]
+  - [[#paradigms][PARADIGMS]]
+  - [[#tools][TOOLS]]
+- [[#frontend][FRONTEND]]
+  - [[#angular][ANGULAR]]
+  - [[#react][REACT]]
+  - [[#svelte][SVELTE]]
+- [[#git][GIT]]
+  - [[#commands][COMMANDS]]
+  - [[#setup][SETUP]]
+  - [[#workflow][WORKFLOW]]
+- [[#git-hosting][GIT HOSTING]]
+  - [[#github][GITHUB]]
+  - [[#gitlab][GITLAB]]
+- [[#languages][LANGUAGES]]
+  - [[#compiled-language][COMPILED LANGUAGE]]
+  - [[#interpreted-language][INTERPRETED LANGUAGE]]
+- [[#os][OS]]
+  - [[#linux][LINUX]]
+- [[#servers][SERVERS]]
+  - [[#hosting][HOSTING]]
+- [[#tools-1][TOOLS]]
+  - [[#text-editors][TEXT EDITORS]]
+- [[#unix][UNIX]]
+  - [[#cli][CLI]]
+  - [[#commands-1][COMMANDS]]
+  - [[#kernel][KERNEL]]
+
+* BACKEND
+** EXPRESS
+** GO
+** NODEJS
+* DATABASE
+** PARADIGMS
+*** NOSQL
+*** SQL
+** TOOLS
+*** FIREBASE
+*** SUPABASE
+* FRONTEND
+** ANGULAR
+** REACT
+** SVELTE
+* GIT
+** COMMANDS
+** SETUP
+** WORKFLOW
+*** TRADITIONAL
+*** WORKTREE
+* GIT HOSTING
+** GITHUB
+** GITLAB
+* LANGUAGES
+** COMPILED LANGUAGE
+*** GO
+**** Formating
+**** Linting
+***** golangci-lint run ./...
+*** RUST
+*** BASH
+** INTERPRETED LANGUAGE
+*** JAVASCRIPT
+*** LUA
+*** TYPESCRIPT
+* OS
+** LINUX
+* SERVERS
+** HOSTING
+*** SERVICE
+**** HEROKU
+**** NETLIFY
+**** VERCEL
+* TOOLS
+** TEXT EDITORS
+*** EMACS
+*** VIM / NEOVIM
+*** VS CODE
+* UNIX
+** CLI
+*** SHELL
+**** BASH
+**** FISH
+**** ZSH
+** COMMANDS
+*** tldr
+*** rg (ripgrep)
+*** hyperfine
+*** z (zoxide)
+** KERNEL
