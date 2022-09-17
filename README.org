@@ -210,6 +210,15 @@ git worktree add feature
 * TOOLS
 ** TEXT EDITORS
 *** EMACS
+**** TANGLE
+***** org babel tangle file without main function (:main no)
+- [Stack Overflow](https://stackoverflow.com/a/26068956)
+  - [Documentation](https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-C.html#orgca44b07)
+  - :main can be set to "no" to inhibit wrapping of the code block in a main function call.
+
+#+begin_src go :main no
+// Code goes here
+#+end_src
 *** VIM / NEOVIM
 *** VS CODE
 * UNIX
