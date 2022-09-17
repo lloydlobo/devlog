@@ -51,12 +51,12 @@
 *** GIT
 **** COMMAND
 ***** CLONE
-****** TODO BARE
-******* This command operates on items in the .git/objects directory and compresses them, removes duplicates, and improves the speed and efficiency of your git repo.
-
+****** BARE
+- BARE REPOS
 #+begin_example sh
-git gc
+git clone --bare <url> or git init --bare faf0c6
 #+end_example
+
 ***** GC
 ****** This command operates on items in the .git/objects directory and compresses them, removes duplicates, and improves the speed and efficiency of your git repo.
 
@@ -87,14 +87,12 @@ git shortlog -sn
 
 ***** RESET
 Open a cloned repository from a particular commit
-
 - [Stack Overflow](https://stackoverflow.com/questions/3555107/git-clone-particular-version-of-remote-repository)
 #+begin_example shell
 git clone [remote_address_here] my_repo
 cd my_repo
 git reset --hard [ENTER HERE THE COMMIT HASH YOU WANT]
 #+end_example
-
 ***** STASH
 ****** git stash
 ******* push
