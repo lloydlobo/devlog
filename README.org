@@ -11,7 +11,10 @@
   - [[#express][EXPRESS]]
   - [[#go][GO]]
   - [[#nodejs][NODEJS]]
+- [[#cli][CLI]]
+  - [[#command][COMMAND]]
 - [[#database][DATABASE]]
+- [[#database-1][DATABASE]]
   - [[#paradigms][PARADIGMS]]
   - [[#tools][TOOLS]]
 - [[#frontend][FRONTEND]]
@@ -19,7 +22,6 @@
   - [[#react][REACT]]
   - [[#svelte][SVELTE]]
 - [[#git][GIT]]
-  - [[#commands][COMMANDS]]
   - [[#setup][SETUP]]
   - [[#workflow][WORKFLOW]]
 - [[#git-hosting][GIT HOSTING]]
@@ -28,6 +30,7 @@
 - [[#languages][LANGUAGES]]
   - [[#compiled-language][COMPILED LANGUAGE]]
   - [[#interpreted-language][INTERPRETED LANGUAGE]]
+  - [[#markup-language][MARKUP LANGUAGE]]
 - [[#os][OS]]
   - [[#linux][LINUX]]
 - [[#servers][SERVERS]]
@@ -35,14 +38,135 @@
 - [[#tools-1][TOOLS]]
   - [[#text-editors][TEXT EDITORS]]
 - [[#unix][UNIX]]
-  - [[#cli][CLI]]
-  - [[#commands-1][COMMANDS]]
+  - [[#shell][SHELL]]
+  - [[#commands][COMMANDS]]
   - [[#kernel][KERNEL]]
 
 * BACKEND
 ** EXPRESS
 ** GO
 ** NODEJS
+* CLI
+** COMMAND
+*** GIT
+**** COMMAND
+***** CLONE
+****** TODO BARE
+******* This command operates on items in the .git/objects directory and compresses them, removes duplicates, and improves the speed and efficiency of your git repo.
+
+#+begin_example sh
+git gc
+#+end_example
+***** GC
+****** This command operates on items in the .git/objects directory and compresses them, removes duplicates, and improves the speed and efficiency of your git repo.
+
+#+begin_example sh
+git gc
+#+end_example
+***** GREP
+****** Runs grep on the files in the repository
+https://youtu.be/kfLrSERFgQo?t=327
+
+#+begin_example sh
+git grep search-term
+#+end_example
+***** Pretty Log Output
+****** git log
+ - Pretty Log Output (PLOG)
+#+begin_example shell
+git config --global  alias.plog "log --graph --format='%Cgreen%h %Cred%aN%Cblue%d%Creset %s %C(yellow)(%cr)%Creset'"
+#+end_example
+****** Log stats by commit
+#+begin_example shell
+git log --stat
+#+end_example
+****** See Top contributors
+#+begin_example shell
+git shortlog -sn
+#+end_example
+
+***** RESET
+Open a cloned repository from a particular commit
+
+- [Stack Overflow](https://stackoverflow.com/questions/3555107/git-clone-particular-version-of-remote-repository)
+#+begin_example shell
+git clone [remote_address_here] my_repo
+cd my_repo
+git reset --hard [ENTER HERE THE COMMIT HASH YOU WANT]
+#+end_example
+
+***** STASH
+****** git stash
+******* push
+#+begin_example sh
+git stash push
+#+end_example
+- Creates a *Box* line an array method.
+  - Puts all the changes inside of it.
+  - Shoves that box in the corner of a room
+  - And gives a clean working tree.
+- The box is portable now.
+  - Switch to any other branch and open the box there.
+  - Open and take out all the changes.
+******* pop
+#+begin_example sh
+git stash pop
+#+end_example
+- Opens the box and applies all stashed changes to the current working tree.
+- Useful when few changes were made, but,
+  - Forgot to make a new branch and are still on `master`/`main`.
+  - And need to move all new changes to the actual feature branch.
+****** Saving and moving changes
+- You're on master/main, and you have changes to docs and you're about to make a commit,
+- but you realize "oh crap, I'm still on master, I needed to put this on a feature branch!"
+
+You can run:
+
+#+begin_example sh
+git stash push
+#+end_example
+
+- To basically package up all those uncommitted changes into a "box" and
+- shove it into a corner returning to a master branch that is a mirror of remote master (CLEAN!)
+
+Then make your branch, switch to it and run:
+
+#+begin_example sh
+git stash pop
+#+end_example
+
+to grab your changes and put them onto the current working branch.
+
+***** WORKTREE
+ Git's Best And Most Unknown Feature: https://youtu.be/2uEqYw-N8uE
+****** Create a bare repo and start making new worktrees
+#+begin_example sh
+git worktree add main
+#+end_example
+- This means that a copy of the repo files is made for each worktree at the source commit that the bare repo was made from
+- Worktrees make it easier to open multiple repo branches at once under a unified workspace for easy switching of work between multiple features
+- Doesn't lend itself to easy updating.
+  - The bare repo doesn't `git pull` itself but the worktrees after creation can use `git pull` but this is not ideal. The bare repo is basically frozen at a single commit for all new worktrees made.
+
+****** Making Worktrees
+******* Make a bare repo
+There's nothing in it, none of the files from the repo just git stuff
+#+begin_example sh
+git clone --bare <repo url.git> <name of the folder to create>
+# ex:
+git clone --bare git@github.com:lloydlobo/CV.git CV
+#+end_example
+******* It takes the current commit at the HEAD of the repo (git pull at you're at the most recent)
+This way you're working with 3 folders basically 3 branches of the same repo but simultaneously.
+
+NO SWITCHING BACK & AND FORTH 🤯️🤯️🤯️
+#+begin_example sh
+git worktree add master
+git worktree add test
+git worktree add feature
+#+end_example
+
+* DATABASE
 * DATABASE
 ** PARADIGMS
 *** NOSQL
@@ -55,7 +179,6 @@
 ** REACT
 ** SVELTE
 * GIT
-** COMMANDS
 ** SETUP
 ** WORKFLOW
 *** TRADITIONAL
@@ -75,6 +198,11 @@
 *** JAVASCRIPT
 *** LUA
 *** TYPESCRIPT
+** MARKUP LANGUAGE
+*** CSS
+*** HTML
+*** MARKDOWN
+*** ORG
 * OS
 ** LINUX
 * SERVERS
@@ -89,11 +217,10 @@
 *** VIM / NEOVIM
 *** VS CODE
 * UNIX
-** CLI
-*** SHELL
-**** BASH
-**** FISH
-**** ZSH
+** SHELL
+*** BASH
+*** FISH
+*** ZSH
 ** COMMANDS
 *** tldr
 *** rg (ripgrep)
