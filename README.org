@@ -14,7 +14,6 @@
 - [[#cli][CLI]]
   - [[#command][COMMAND]]
 - [[#database][DATABASE]]
-- [[#database-1][DATABASE]]
   - [[#paradigms][PARADIGMS]]
   - [[#tools][TOOLS]]
 - [[#frontend][FRONTEND]]
@@ -164,7 +163,6 @@ git worktree add test
 git worktree add feature
 #+end_example
 
-* DATABASE
 * DATABASE
 ** PARADIGMS
 *** NOSQL
