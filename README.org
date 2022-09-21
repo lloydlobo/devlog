@@ -31,7 +31,7 @@
   - [[#interpreted-language][INTERPRETED LANGUAGE]]
   - [[#markup-language][MARKUP LANGUAGE]]
 - [[#os][OS]]
-  - [[#linux][LINUX]]
+  - [[#linux--unix][LINUX | UNIX]]
 - [[#servers][SERVERS]]
   - [[#hosting][HOSTING]]
 - [[#tools-1][TOOLS]]
@@ -200,7 +200,58 @@ git worktree add feature
 *** MARKDOWN
 *** ORG
 * OS
-** LINUX
+** LINUX | UNIX
+*** Commands
+**** Piping
+***** (cat/tac) | (less/pg/more..): Concatenate: Show output content with one scroll length and not the end
+- https://www.guru99.com/linux-pipe-grep.html
+
+****** The pipe takes output of `cat` to `less`.
+"When you use ‘cat’ command to view a file which spans multiple pages, the prompt quickly jumps to the last page of the file,
+and you do not see the content in the middle."
+
+#+begin_src shell
+cat ~/.bashrc | less
+#+end_src
+
+****** "And, you can view the file in digestible bits and scroll down by simply hitting the enter key."
+`-n` flag for showing line numbers
+#+begin_src shell
+cat -n ~/.bashrc | more
+#+end_src
+
+- Both modern "more" and the freeware "less" are providing this feature, making pg somewhat obsolete. `pg` for pager
+#+begin_src shell
+cat -n ~/.bashrc | pg
+#+end_src
+
+***** grep
+syntax: `grep search_string`
+
+****** cat | less | grep
+#+begin_src shell
+cat ~/.bashrc | less | grep export
+#+end_src
+
+****** fd <pattern> --exec <cmd> | less | grep <search_string>
+#+begin_src shell
+fd bash --exec cat -n | less | grep export
+#+end_src
+
+#+RESULTS:
+: 06:51  ➜  fd bash --exec cat -n | less | grep export
+:     5  export GO111MODULE=on
+:     7  export GO111MODULE=on
+:    30  export GO111MODULE=off
+:     6  export GO111MODULE=on
+:    31  export GO111MODULE=off
+:     5  export GO111MODULE=on
+:     7  export GO111MODULE=off
+:     5  export GO111MODULE=on
+:     5  export GONOSUMDB=*/text # rsc.io/text but not golang.org/x/text
+:    44                  "SC2034", // PREFIX appears unused. Verify it or export it.
+:    44                  "SC2034", // PREFIX appears unused. Verify it or export it.
+
 * SERVERS
 ** HOSTING
 *** SERVICE
@@ -210,8 +261,9 @@ git worktree add feature
 * TOOLS
 ** TEXT EDITORS
 *** EMACS
-**** TANGLE
-***** org babel tangle file without main function (:main no)
+**** ORG MODE
+***** TANGLE
+****** org babel tangle file without main function (:main no)
 - [Stack Overflow](https://stackoverflow.com/a/26068956)
   - [Documentation](https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-C.html#orgca44b07)
   - :main can be set to "no" to inhibit wrapping of the code block in a main function call.
@@ -219,7 +271,75 @@ git worktree add feature
 #+begin_src go :main no
 // Code goes here
 #+end_src
+***** INCLUDE FILES
+****** Org mode 8.3+ supports this.
+- [Documentation](https://orgmode.org/manual/Include-Files.html)
+- URL: https://stackoverflow.com/a/29401769
+
+******* C-c ' (org-edit~special)
+ This command allows navigating to the included document:
+- Visit the included file at point.
+- During export, you can include the content of another file. For example, to include your ‘.emacs’ file, you could use:
+    The first parameter is the file name to include. The optional second parameter specifies the block type: ‘example’, ‘export’ or ‘src’. The optional third parameter specifies the source code language to use for formatting the contents. This is relevant to both ‘export’ and ‘src’ block types.
+#+begin_src emacs-lisp
+#+INCLUDE: "~/.emacs" src emacs-lisp
+#+end_src
+
+- For example: (this) will include the first 20 lines of the headline named conclusion.
+#+begin_src emacs-lisp
+#+INCLUDE: "./paper.org::*conclusion" :lines 1-20
+#+end_src
+
+- Also, to include a heading by its CUSTOM_ID property (suppose it is Sec: Introduction):
+#+begin_src emacs-lisp
+#+INCLUDE: "./paper.org::#Sec: Introduction"
+#+end_src
+
+- I found :only-contents t works well for my application (I'm including a subtree from another org file for a beamer presentation):
+#+begin_src emacs-lisp
+#+INCLUDE: "./paper.org::*conclusion" :only-contents t
+#+end_src
+
 *** VIM / NEOVIM
+**** MACROS
+***** Register a macro:
+****** To record a macro and save it to a register:
+  - type the key q followed by a letter from a to z that represents the register to save the macro,
+  - followed by all commands you want to record, and
+  - then type the key q again to stop the recording.
+
+#+begin_example
+q<register><commands>q
+#+end_example
+
+****** To execute the recorded macro wit `@+register`:
+#+begin_example
+@<register>
+#+end_example
+
+****** Examples:
+******* Record a basic macro that inserts a new line and save it to register a, use this sequence:
+[Use Vim macros to automate frequent tasks][https://www.redhat.com/sysadmin/use-vim-macros]
+#+begin_example
+qao<ESC>q
+#+end_example
+
+******* Wrap quotes on each elements of an array
+#+begin_example
+# vwh " "www^[
+# Macro keys used:
+qn          # recording@n.
+vwh         # select word and `h` to go left as , gets selected.
+<leader>"   # here leader key is space` `. and a cmd to wrap "quotes" around in visual mode.
+www         # Move 3 words to the right on the next element.
+CTRL-[      # Escape or C-[ or jk or jj.
+# Finally press q to exit macro recording mode.
+
+# Next Press:
+@n          # Shift-2 or `@` and `n` to apply macro changes on each keypress.
+#+end_example
+
+
 *** VS CODE
 * UNIX
 ** SHELL
