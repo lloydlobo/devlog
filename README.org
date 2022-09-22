@@ -1,12 +1,12 @@
 #+TITLE: devlog
 #+AUTHOR: lloydlobo
 #+DESCRIPTION: Developer Log Notes
-#+STARTUP: overview
+#+STARTUP: fold
 #+OPTIONS: num:nil ^:{}
 # #+PROPERTY: header-args :tangle yes :results none
 -----
 
-* TABLE OF CONTENTS :toc:
+* TABLE OF CONTENTS :TOC:
 - [[#backend][BACKEND]]
   - [[#express][EXPRESS]]
   - [[#go][GO]]
@@ -68,7 +68,6 @@
 # Run a command with the changed file (`/_`) as an argument:
 ls *.go | entr go test -v
 #+end_src
-
 * CLI
 ** COMMAND
 *** GIT
@@ -282,6 +281,26 @@ cd & echo (pwd) & sort -n ~/hist.org | cat -n  # -n: sort numerically
 cd & echo (pwd) & sort -f ~/hist.org | cat -n  # -f: case insensitive sorting
 #+end_src
 
+**** curl
+#+begin_src shell
+curl "https://en.wikipedia.org/wiki/Pipeline_(Unix)" |
+sed 's/[^a-zA-Z ]/ /g' |
+tr 'A-Z ' 'a-z\n' |
+grep '[a-z]' |
+sort -u |
+comm -23 - <(sort /usr/share/dict/words) |
+less
+#+end_src
+
+#+begin_src shell
+curl "https://en.wikipedia.org/wiki/Pipeline_(Unix)" |
+sed 's/[^a-zA-Z ]/ /g' |
+tr 'A-Z ' 'a-z\n' |
+grep '[a-z]' |
+sort -u |
+comm -23 - <(sort /usr/share/dict/words) |
+fzf
+#+end_src
 **** Filter: awk, grep, sed, spell, and wc.
 When you pipe two commands, the “filtered ” output of the first command is given to the next.
 
@@ -304,6 +323,17 @@ cat -n ~/hist.org | grep -l a
 **** rg (ripgrep)
 **** hyperfine
 **** z (zoxide)
+**** fd
+***** Execute a command on each search result returned:
+#+begin_example shell
+fd pattern --exec command
+#+end_example
+
+#+begin_src shell
+fd --extension js
+# qutebrowser/greasemonkey/darkreader.js
+#+end_src
+
 * DATABASE
 ** PARADIGMS
 *** NOSQL
@@ -329,6 +359,62 @@ cat -n ~/hist.org | grep -l a
 **** Formating
 **** Linting
 ***** golangci-lint run ./...
+**** OS
+***** EXEC
+****** CMD
+******* StdinPipe
+https://stackoverflow.com/questions/10781516/how-to-pipe-several-commands-in-go
+StdoutPipe returns a pipe that will be connected to the command's standard output when the command starts. The pipe will be closed automatically after Wait sees the command exit.
+
+(from http://golang.org/pkg/os/exec/#Cmd.StdinPipe )
+
+The fact you do c1.Wait closes the stdoutPipe.
+
+I made a working example (just a demo, add error catching!) :
+#+begin_src go
+package main
+
+import (
+    "bytes"
+    "io"
+    "os"
+    "os/exec"
+)
+
+func main() {
+    c1 := exec.Command("ls")
+    c2 := exec.Command("wc", "-l")
+
+    r, w := io.Pipe()
+    c1.Stdout = w
+    c2.Stdin = r
+
+    var b2 bytes.Buffer
+    c2.Stdout = &b2
+
+    c1.Start()
+    c2.Start()
+    c1.Wait()
+    w.Close()
+    c2.Wait()
+    io.Copy(os.Stdout
+#+end_src
+******* Simple Chaining or piping commands
+- For simple scenarios, you could use this approach:
+#+begin_example go
+bash -c "echo 'your command goes here'"
+#+end_example
+- For example, this function retrieves the CPU model name using piped commands:
+#+begin_src go :main no
+func getCPUmodel() string {
+        cmd := "cat /proc/cpuinfo | egrep '^model name' | uniq | awk '{print substr($0, index($0,$4))}'"
+        out, err := exec.Command("bash","-c",cmd).Output()
+        if err != nil {
+                return fmt.Sprintf("Failed to execute command: %s", cmd)
+        }
+        return string(out)
+}
+#+end_src
 *** RUST
 *** BASH
 ** INTERPRETED LANGUAGE
