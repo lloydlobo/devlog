@@ -11,6 +11,8 @@
   - [[#express][EXPRESS]]
   - [[#go][GO]]
   - [[#nodejs][NODEJS]]
+- [[#automation][AUTOMATION]]
+  - [[#entr][entr]]
 - [[#cli][CLI]]
   - [[#command][COMMAND]]
 - [[#database][DATABASE]]
@@ -30,21 +32,43 @@
   - [[#compiled-language][COMPILED LANGUAGE]]
   - [[#interpreted-language][INTERPRETED LANGUAGE]]
   - [[#markup-language][MARKUP LANGUAGE]]
-- [[#os][OS]]
-  - [[#linux--unix][LINUX | UNIX]]
 - [[#servers][SERVERS]]
   - [[#hosting][HOSTING]]
 - [[#tools-1][TOOLS]]
   - [[#text-editors][TEXT EDITORS]]
 - [[#unix][UNIX]]
-  - [[#shell][SHELL]]
-  - [[#commands][COMMANDS]]
+  - [[#shells][SHELLS]]
   - [[#kernel][KERNEL]]
 
 * BACKEND
 ** EXPRESS
 ** GO
 ** NODEJS
+
+* AUTOMATION
+** entr
+*** About entr
+#+begin_example
+  Run arbitrary commands when files change.
+  More information: <https://manned.org/entr>.
+  Rebuild with `make` if any file in any subdirectory changes:
+      ag -l | entr make
+  Rebuild and test with `make` if any `.c` source files in the current directory change:
+      ls *.c | entr 'make && make test'
+  Send a `SIGTERM` to any previously spawned ruby subprocesses before executing `ruby main.rb`:
+      ls *.rb | entr -r ruby main.rb
+  Run a command with the changed file (`/_`) as an argument:
+      ls *.sql | entr psql -f /_
+#+end_example
+
+*** Concurrent tests on file change:
+#+begin_src shell
+#!/usr/bin/env bash
+
+# Run a command with the changed file (`/_`) as an argument:
+ls *.go | entr go test -v
+#+end_src
+
 * CLI
 ** COMMAND
 *** GIT
@@ -162,7 +186,124 @@ git worktree add master
 git worktree add test
 git worktree add feature
 #+end_example
+*** PIPING
+**** (cat/tac) | (less/pg/more..)
+Concatenate: Show output content with one scroll length and not the end
+- https://www.guru99.com/linux-pipe-grep.html
 
+***** The pipe takes output of `cat` to `less`.
+"When you use ‘cat’ command to view a file which spans multiple pages, the prompt quickly jumps to the last page of the file,
+and you do not see the content in the middle."
+
+#+begin_src shell
+cat ~/.bashrc | less
+#+end_src
+
+***** "And, you can view the file in digestible bits and scroll down by simply hitting the enter key."
+`-n` flag for showing line numbers
+#+begin_src shell
+cat -n ~/.bashrc | more
+#+end_src
+
+- Both modern "more" and the freeware "less" are providing this feature, making pg somewhat obsolete. `pg` for pager
+#+begin_src shell
+cat -n ~/.bashrc | pg
+#+end_src
+
+**** grep
+#+begin_example
+syntax: `grep search_string`
+#+end_example
+***** grep --options -(v,c,n,i,l)
+#+begin_example shell
+grep -v string # Shows all the lines that do not match the searched string
+grep -c string # Displays only the count of matching lines
+grep -n string # Shows the matching line and its number
+grep -i string # Match both (upper and lower) case
+grep -l string # Shows just the name of the file with the string
+#+end_example
+****** cat <file> | grep -i : Match both (upper & lower case)
+#+begin_src shell
+cat -n ~/.bashrc | grep -i x | less
+#+end_src
+****** cat <file> | grep -c : Show matching line & its number
+#+begin_src shell
+cat ~/.bashrc | grep -c x | less
+#+end_src
+
+#+RESULTS:
+: 48
+***** cat | less | grep
+#+begin_src shell
+cat ~/.bashrc | less | grep export
+#+end_src
+
+***** fd <pattern> --exec <cmd> | less | grep <search_string>
+#+begin_src shell
+fd bash --exec cat -n | less | grep export
+#+end_src
+
+#+RESULTS:
+: 06:51  ➜  fd bash --exec cat -n | less | grep export
+:     5  export GO111MODULE=on
+:     7  export GO111MODULE=on
+:    30  export GO111MODULE=off
+:     6  export GO111MODULE=on
+:    31  export GO111MODULE=off
+:     5  export GO111MODULE=on
+:     7  export GO111MODULE=off
+:     5  export GO111MODULE=on
+:     5  export GONOSUMDB=*/text # rsc.io/text but not golang.org/x/text
+:    44                  "SC2034", // PREFIX appears unused. Verify it or export it.
+:    44                  "SC2034", // PREFIX appears unused. Verify it or export it.
+
+**** sort
+This command helps in sorting out the contents of a file alphabetically.
+
+#+begin_example
+syntax: `sort Filename`
+#+end_example
+
+***** sort | cat
+#+begin_src shell
+sort ~/hist.org | cat -n
+#+end_src
+
+#+RESULTS:
+| 1 |       |
+| 2 | apple |
+| 3 | hello |
+| 4 | world |
+
+***** sort --flags
+#+begin_src shell
+echo (cd & pwd) & sort -r ~/hist.org | cat -n  # -r: reverse sorting
+cd & echo (pwd) & sort -n ~/hist.org | cat -n  # -n: sort numerically
+cd & echo (pwd) & sort -f ~/hist.org | cat -n  # -f: case insensitive sorting
+#+end_src
+
+**** Filter: awk, grep, sed, spell, and wc.
+When you pipe two commands, the “filtered ” output of the first command is given to the next.
+
+***** Highlight lines that do not have ‘a’ & output result in reverse order.
+#+begin_src shell
+cat -n ~/hist.org | grep -v a | sort -r
+cat -n ~/hist.org | grep -l a
+#+end_src
+
+#+RESULTS:
+| 6	-1           |
+| 5	11           |
+| 4	1            |
+| 2	world        |
+| 1	hello        |
+| (standard input) |
+
+*** Individual
+**** tldr
+**** rg (ripgrep)
+**** hyperfine
+**** z (zoxide)
 * DATABASE
 ** PARADIGMS
 *** NOSQL
@@ -199,59 +340,6 @@ git worktree add feature
 *** HTML
 *** MARKDOWN
 *** ORG
-* OS
-** LINUX | UNIX
-*** Commands
-**** Piping
-***** (cat/tac) | (less/pg/more..): Concatenate: Show output content with one scroll length and not the end
-- https://www.guru99.com/linux-pipe-grep.html
-
-****** The pipe takes output of `cat` to `less`.
-"When you use ‘cat’ command to view a file which spans multiple pages, the prompt quickly jumps to the last page of the file,
-and you do not see the content in the middle."
-
-#+begin_src shell
-cat ~/.bashrc | less
-#+end_src
-
-****** "And, you can view the file in digestible bits and scroll down by simply hitting the enter key."
-`-n` flag for showing line numbers
-#+begin_src shell
-cat -n ~/.bashrc | more
-#+end_src
-
-- Both modern "more" and the freeware "less" are providing this feature, making pg somewhat obsolete. `pg` for pager
-#+begin_src shell
-cat -n ~/.bashrc | pg
-#+end_src
-
-***** grep
-syntax: `grep search_string`
-
-****** cat | less | grep
-#+begin_src shell
-cat ~/.bashrc | less | grep export
-#+end_src
-
-****** fd <pattern> --exec <cmd> | less | grep <search_string>
-#+begin_src shell
-fd bash --exec cat -n | less | grep export
-#+end_src
-
-#+RESULTS:
-: 06:51  ➜  fd bash --exec cat -n | less | grep export
-:     5  export GO111MODULE=on
-:     7  export GO111MODULE=on
-:    30  export GO111MODULE=off
-:     6  export GO111MODULE=on
-:    31  export GO111MODULE=off
-:     5  export GO111MODULE=on
-:     7  export GO111MODULE=off
-:     5  export GO111MODULE=on
-:     5  export GONOSUMDB=*/text # rsc.io/text but not golang.org/x/text
-:    44                  "SC2034", // PREFIX appears unused. Verify it or export it.
-:    44                  "SC2034", // PREFIX appears unused. Verify it or export it.
-
 * SERVERS
 ** HOSTING
 *** SERVICE
@@ -342,13 +430,8 @@ CTRL-[      # Escape or C-[ or jk or jj.
 
 *** VS CODE
 * UNIX
-** SHELL
+** SHELLS
 *** BASH
 *** FISH
 *** ZSH
-** COMMANDS
-*** tldr
-*** rg (ripgrep)
-*** hyperfine
-*** z (zoxide)
 ** KERNEL
