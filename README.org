@@ -1,4 +1,4 @@
-#+TITLE: devlog
+#+TITLE: Devlog
 #+AUTHOR: lloydlobo
 #+DESCRIPTION: Developer Log Notes
 #+STARTUP: fold
@@ -7,18 +7,18 @@
 -----
 
 * TABLE OF CONTENTS :TOC:
-- [[#backend][BACKEND]]
+- [[#back-end][BACK-END]]
   - [[#express][EXPRESS]]
   - [[#go][GO]]
   - [[#nodejs][NODEJS]]
 - [[#automation][AUTOMATION]]
   - [[#entr][entr]]
-- [[#cli][CLI]]
+- [[#command-line-interface][COMMAND LINE INTERFACE]]
   - [[#command][COMMAND]]
 - [[#database][DATABASE]]
   - [[#paradigms][PARADIGMS]]
   - [[#tools][TOOLS]]
-- [[#frontend][FRONTEND]]
+- [[#front-end][FRONT-END]]
   - [[#angular][ANGULAR]]
   - [[#react][REACT]]
   - [[#svelte][SVELTE]]
@@ -39,8 +39,10 @@
 - [[#unix][UNIX]]
   - [[#shells][SHELLS]]
   - [[#kernel][KERNEL]]
+- [[#best-practices][Best Practices]]
+  - [[#practical-go-real-world-advice-for-writing-maintainable-go-programs][Practical Go: Real world advice for writing maintainable Go programs]]
 
-* BACKEND
+* BACK-END
 ** EXPRESS
 ** GO
 ** NODEJS
@@ -68,7 +70,7 @@
 # Run a command with the changed file (`/_`) as an argument:
 ls *.go | entr go test -v
 #+end_src
-* CLI
+* COMMAND LINE INTERFACE
 ** COMMAND
 *** GIT
 **** COMMAND
@@ -341,7 +343,7 @@ fd --extension js
 ** TOOLS
 *** FIREBASE
 *** SUPABASE
-* FRONTEND
+* FRONT-END
 ** ANGULAR
 ** REACT
 ** SVELTE
@@ -355,8 +357,97 @@ fd --extension js
 ** GITLAB
 * LANGUAGES
 ** COMPILED LANGUAGE
+*** C
+**** Types, format codes, operators
+#+URL: https://cs50.harvard.edu/x/2022/notes/1/#types-format-codes-operators
+- There are many data types we can use for our variables, which indicate to our program what type of data they represent: bool, a Boolean expression of either true or false
+***** Types
+- bool, use boolean standard library <stdbool.h>
+- char, a single character like a or 2
+- double, a floating-point value with more digits than a float
+- float, a floating-point value, or real number with a decimal value
+- int, integers up to a certain size, or number of bits
+- long, integers with more bits, so they can count higher than an int
+- string, a string of characters
+
+#+begin_src c :main no
+#include <stdbool.h>
+#include <stdio.h>
+#include <strings.h>
+#define BOOL bool
+
+int main(int argc, char *argv[]) {
+  printf("\ntypes ➜ \n");
+  bool boolean = true;
+  printf("| bool      :     %s\n", boolean ? "true" : "false");
+  char *charS = "a";
+  printf("| char      :     %s\n", charS);
+  double d = 300.00;
+  printf("| double    :     %f\n", d);
+  float f = 3.33;
+  printf("| float     :     %f\n", f);
+  int i = 1;
+  printf("| int       :     %i\n", i);
+  long l = 4334423487654434;
+  printf("| long      :     %li\n", l);
+  char strings[] = "strings are char <variable>[]";
+  printf("| strings   :     %s\n", strings);
+  return 0;
+}
+
+#+end_src
+
+***** CS50
+****** And the CS50 Library has corresponding functions to get input of various types:
+#+begin_src c
+get_char
+get_double
+get_float
+get_int
+get_long
+get_string
+#+end_example
+****** For printf, too, there are different placeholders for each type, called format codes:
+#+begin_example c
+%c for chars
+%f for floats or doubles
+%i for ints
+%li for long integers
+%s for strings
+#+end_example
+****** There are several mathematical operators we can use, too:
+#+begin_example c
++ for addition
+- for subtraction
+#+end_example
+
 *** GO
 **** Formating
+**** Naming Conventions
+***** Files
+Go follows a convention where source files are all lower case with underscore separating multiple words.
+Compound file names are separated with _
+File names that begin with “.” or “_” are ignored by the go tool
+Files with the suffix _test.go are only compiled and run by the go test tool.
+***** Functions and Methods
+Use camel case, exported functions should start with uppercase:
+
+writeToDB // unexported, only visible within the package
+WriteToDB // exported, visible within the package
+***** Constants
+Constant should use all capital letters and use underscore _ to separate words.
+
+***** Variables
+Generally, use relatively simple (short) name.
+Consistent naming style should be used the entire source code
+user to u
+
+userID to uid
+
+If variable type is bool, its name should start with Has, Is, Can or Allow, etc.
+Single letter represents index: i, j, k
+Dave has an excellent article on wriing good and quality Go https://dave.cheney.net/practical-go/presentations/qcon-china.html
+
 **** Linting
 ***** golangci-lint run ./...
 **** OS
@@ -416,8 +507,8 @@ func getCPUmodel() string {
 }
 #+end_src
 *** RUST
-*** BASH
 ** INTERPRETED LANGUAGE
+*** BASH
 *** JAVASCRIPT
 *** LUA
 *** TYPESCRIPT
@@ -444,6 +535,13 @@ func getCPUmodel() string {
 
 #+begin_src go :main no
 // Code goes here
+#+end_src
+****** Wrap the list of languages you want to use with org-babel inside the with-eval-after-load block
+#+begin_src emacs-lisp
+(with-eval-after-load 'org
+(org-babel-do-load-languages 'org-babel-load-languages '((ruby . t)
+(plantuml . t)
+)))
 #+end_src
 ***** INCLUDE FILES
 ****** Org mode 8.3+ supports this.
@@ -521,3 +619,41 @@ CTRL-[      # Escape or C-[ or jk or jj.
 *** FISH
 *** ZSH
 ** KERNEL
+
+* Best Practices
+** Practical Go: Real world advice for writing maintainable Go programs
+https://dave.cheney.net/practical-go/presentations/qcon-china.html
+*** Guiding principles
+**** 1.1. Simplicity
+**** 1.2. Readability
+**** 1.3. Productivity
+*** Identifiers
+**** 2.1. Choose identifiers for clarity, not brevity
+**** 2.2. Identifier length
+**** 2.3. Don’t name your variables for their types
+**** 2.4. Use a consistent naming style
+**** 2.5. Use a consistent declaration style
+**** 2.6. Be a team player
+*** Comments
+**** 3.1. Comments on variables and constants should describe their contents not their purpose
+**** 3.2. Always document public symbols
+*** Package Design
+**** 4.1. A good package starts with its name
+**** 4.2. Avoid package names like base, common, or util
+**** 4.3. Return early rather than nesting deeply
+**** 4.4. Make the zero value useful
+**** 4.5. Avoid package level state
+*** Project Structure
+**** 5.1. Consider fewer, larger packages
+**** 5.2. Keep package main small as small as possible
+*** API Design
+**** 6.1. Design APIs that are hard to misuse.
+**** 6.2. Design APIs for their default use case
+**** 6.3. Let functions define the behaviour they requires
+*** Error handling
+**** 7.1. Eliminate error handling by eliminating errors
+**** 7.2. Only handle an error once
+*** Concurrency
+**** 8.1. Keep yourself busy or do the work yourself
+**** 8.2. Leave concurrency to the caller
+**** 8.3. Never start a goroutine without knowning when it will stop
