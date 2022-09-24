@@ -60,12 +60,33 @@
 #+end_example
 
 *** Concurrent tests on file change:
+**** Compile and Build the binary.
+***** With go
 #+begin_src shell
 #!/usr/bin/env bash
 
 # Run a command with the changed file (`/_`) as an argument:
 ls *.go | entr go test -v
 #+end_src
+***** With gcc
+#+begin_src shell
+#!/usr/bin/env bash
+ls *.c | entr gcc main.c -o main
+#+end_src
+***** With make
+#+begin_src shell
+#!/usr/bin/env bash
+ls *.c | entr make main
+#+end_src
+*** Flags
+**** -p | Postpones the first execution of the utility until a file is modified.
+***** Run a command with the changed file (`/_`) as an argument:
+https://www.systutorials.com/docs/linux/man/1-entr/
+#+begin_src shell
+#!/usr/bin/env bash
+ls *.c | entr -p ./main
+#+end_src
+
 * back-end
 ** EXPRESS
 ** GO
