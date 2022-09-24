@@ -3,51 +3,47 @@
 #+DESCRIPTION: Developer Log Notes
 #+STARTUP: fold
 #+OPTIONS: num:nil ^:{}
-# #+PROPERTY: header-args :tangle yes :results none
 -----
 
 * TABLE OF CONTENTS :TOC:
-- [[#back-end][BACK-END]]
+- [[#--------------------------][--------------------------]]
+- [[#automation][automation]]
+  - [[#entr][entr]]
+- [[#back-end][back-end]]
   - [[#express][EXPRESS]]
   - [[#go][GO]]
   - [[#nodejs][NODEJS]]
-- [[#automation][AUTOMATION]]
-  - [[#entr][entr]]
-- [[#command-line-interface][COMMAND LINE INTERFACE]]
+- [[#best-practices][best practices]]
+  - [[#practical-go-real-world-advice-for-writing-maintainable-go-programs][Practical Go: Real world advice for writing maintainable Go programs]]
+- [[#command-line-interface][command line interface]]
   - [[#command][COMMAND]]
-- [[#database][DATABASE]]
+- [[#database][database]]
   - [[#paradigms][PARADIGMS]]
   - [[#tools][TOOLS]]
-- [[#front-end][FRONT-END]]
+- [[#front-end][front-end]]
   - [[#angular][ANGULAR]]
   - [[#react][REACT]]
   - [[#svelte][SVELTE]]
-- [[#git][GIT]]
+- [[#git][git]]
   - [[#setup][SETUP]]
   - [[#workflow][WORKFLOW]]
-- [[#git-hosting][GIT HOSTING]]
+- [[#git-hosting][git hosting]]
   - [[#github][GITHUB]]
   - [[#gitlab][GITLAB]]
-- [[#languages][LANGUAGES]]
+- [[#languages][languages]]
   - [[#compiled-language][COMPILED LANGUAGE]]
   - [[#interpreted-language][INTERPRETED LANGUAGE]]
   - [[#markup-language][MARKUP LANGUAGE]]
-- [[#servers][SERVERS]]
+- [[#servers][servers]]
   - [[#hosting][HOSTING]]
-- [[#tools-1][TOOLS]]
+- [[#tools-1][tools]]
   - [[#text-editors][TEXT EDITORS]]
-- [[#unix][UNIX]]
+- [[#unix][unix]]
   - [[#shells][SHELLS]]
   - [[#kernel][KERNEL]]
-- [[#best-practices][Best Practices]]
-  - [[#practical-go-real-world-advice-for-writing-maintainable-go-programs][Practical Go: Real world advice for writing maintainable Go programs]]
 
-* BACK-END
-** EXPRESS
-** GO
-** NODEJS
-
-* AUTOMATION
+* --------------------------
+* automation
 ** entr
 *** About entr
 #+begin_example
@@ -70,7 +66,49 @@
 # Run a command with the changed file (`/_`) as an argument:
 ls *.go | entr go test -v
 #+end_src
-* COMMAND LINE INTERFACE
+* back-end
+** EXPRESS
+** GO
+** NODEJS
+
+* best practices
+** Practical Go: Real world advice for writing maintainable Go programs
+https://dave.cheney.net/practical-go/presentations/qcon-china.html
+*** Guiding principles
+**** 1.1. Simplicity
+**** 1.2. Readability
+**** 1.3. Productivity
+*** Identifiers
+**** 2.1. Choose identifiers for clarity, not brevity
+**** 2.2. Identifier length
+**** 2.3. Don’t name your variables for their types
+**** 2.4. Use a consistent naming style
+**** 2.5. Use a consistent declaration style
+**** 2.6. Be a team player
+*** Comments
+**** 3.1. Comments on variables and constants should describe their contents not their purpose
+**** 3.2. Always document public symbols
+*** Package Design
+**** 4.1. A good package starts with its name
+**** 4.2. Avoid package names like base, common, or util
+**** 4.3. Return early rather than nesting deeply
+**** 4.4. Make the zero value useful
+**** 4.5. Avoid package level state
+*** Project Structure
+**** 5.1. Consider fewer, larger packages
+**** 5.2. Keep package main small as small as possible
+*** API Design
+**** 6.1. Design APIs that are hard to misuse.
+**** 6.2. Design APIs for their default use case
+**** 6.3. Let functions define the behaviour they requires
+*** Error handling
+**** 7.1. Eliminate error handling by eliminating errors
+**** 7.2. Only handle an error once
+*** Concurrency
+**** 8.1. Keep yourself busy or do the work yourself
+**** 8.2. Leave concurrency to the caller
+**** 8.3. Never start a goroutine without knowning when it will stop
+* command line interface
 ** COMMAND
 *** GIT
 **** COMMAND
@@ -336,26 +374,26 @@ fd --extension js
 # qutebrowser/greasemonkey/darkreader.js
 #+end_src
 
-* DATABASE
+* database
 ** PARADIGMS
 *** NOSQL
 *** SQL
 ** TOOLS
 *** FIREBASE
 *** SUPABASE
-* FRONT-END
+* front-end
 ** ANGULAR
 ** REACT
 ** SVELTE
-* GIT
+* git
 ** SETUP
 ** WORKFLOW
 *** TRADITIONAL
 *** WORKTREE
-* GIT HOSTING
+* git hosting
 ** GITHUB
 ** GITLAB
-* LANGUAGES
+* languages
 ** COMPILED LANGUAGE
 *** C
 **** Types, format codes, operators
@@ -517,13 +555,13 @@ func getCPUmodel() string {
 *** HTML
 *** MARKDOWN
 *** ORG
-* SERVERS
+* servers
 ** HOSTING
 *** SERVICE
 **** HEROKU
 **** NETLIFY
 **** VERCEL
-* TOOLS
+* tools
 ** TEXT EDITORS
 *** EMACS
 **** ORG MODE
@@ -613,47 +651,10 @@ CTRL-[      # Escape or C-[ or jk or jj.
 
 
 *** VS CODE
-* UNIX
+* unix
 ** SHELLS
 *** BASH
 *** FISH
 *** ZSH
 ** KERNEL
 
-* Best Practices
-** Practical Go: Real world advice for writing maintainable Go programs
-https://dave.cheney.net/practical-go/presentations/qcon-china.html
-*** Guiding principles
-**** 1.1. Simplicity
-**** 1.2. Readability
-**** 1.3. Productivity
-*** Identifiers
-**** 2.1. Choose identifiers for clarity, not brevity
-**** 2.2. Identifier length
-**** 2.3. Don’t name your variables for their types
-**** 2.4. Use a consistent naming style
-**** 2.5. Use a consistent declaration style
-**** 2.6. Be a team player
-*** Comments
-**** 3.1. Comments on variables and constants should describe their contents not their purpose
-**** 3.2. Always document public symbols
-*** Package Design
-**** 4.1. A good package starts with its name
-**** 4.2. Avoid package names like base, common, or util
-**** 4.3. Return early rather than nesting deeply
-**** 4.4. Make the zero value useful
-**** 4.5. Avoid package level state
-*** Project Structure
-**** 5.1. Consider fewer, larger packages
-**** 5.2. Keep package main small as small as possible
-*** API Design
-**** 6.1. Design APIs that are hard to misuse.
-**** 6.2. Design APIs for their default use case
-**** 6.3. Let functions define the behaviour they requires
-*** Error handling
-**** 7.1. Eliminate error handling by eliminating errors
-**** 7.2. Only handle an error once
-*** Concurrency
-**** 8.1. Keep yourself busy or do the work yourself
-**** 8.2. Leave concurrency to the caller
-**** 8.3. Never start a goroutine without knowning when it will stop
