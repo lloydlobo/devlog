@@ -5,7 +5,7 @@
 #+OPTIONS: num:nil ^:{}
 -----
 
-* TABLE OF CONTENTS :TOC:
+* Table of Contents :TOC:
 - [[#--------------------------][--------------------------]]
 - [[#automation][automation]]
   - [[#entr][entr]]
@@ -509,7 +509,7 @@ Dave has an excellent article on wriing good and quality Go https://dave.cheney.
 
 **** Linting
 ***** golangci-lint run ./...
-**** OS
+**** OS (exec.Command, ...)
 ***** EXEC
 ****** CMD
 ******* StdinPipe
@@ -565,6 +565,67 @@ func getCPUmodel() string {
         return string(out)
 }
 #+end_src
+******* Use slice of args for os.exec.Command
+URL: https://stackoverflow.com/a/66487591
+******** From the os/exec documentation:
+
+Unlike the "system" library call from C and other languages, the os/exec package intentionally does not invoke the system shell and does not expand any glob patterns or handle other expansions, pipelines, or redirections typically done by shells.
+
+Since the arg ...string parameter of exec.Command() isn't processed by a shell, each argument is handed to the command exactly as specified. In your case, the entire content of metaData is provided to geth as a single argument.
+
+You should instead create a slice of strings, each containing a single argument. And then provide that slice as the arg parameter using the ... notation.
+
+******** Here's an example demonstrating this, using the uname command:
+#+begin_src go
+
+package main
+
+import (
+    "fmt"
+    "os/exec"
+)
+
+func main() {
+    command := "uname"
+    argsString := "--kernel-name --machine"
+    argsSlice := []string{"--kernel-name", "--machine"}
+
+    // Equivalent command:
+    // $ uname "--kernel-name --machine"
+    fmt.Println("exec.Command(command, argsString)")
+    stringOutput, err := exec.Command(command, argsString).CombinedOutput()
+    if err != nil {
+        fmt.Printf("Failed: %s\n", err)
+    }
+    fmt.Printf("Output:\n%s\n", stringOutput)
+
+    // Equivalent command:
+    // $ uname --kernel-name --machine
+    fmt.Println("exec.Command(command, argsSlice)")
+    sliceOutput, err := exec.Command(command, argsSlice...).CombinedOutput()
+    if err != nil {
+        fmt.Printf("Failed: %s", err)
+    }
+    fmt.Printf("Output:\n%s\n", sliceOutput)
+}
+
+#+end_src
+
+And it's ouput:
+#+begin_src shell
+
+$ go run main.go
+exec.Command(command, argsString)
+Failed: exit status 1
+Output:
+uname: unrecognized option '--kernel-name --machine'
+Try 'uname --help' for more information.
+
+exec.Command(command, argsSlice)
+Output:
+Linux x86_64
+#+end_src
+
 *** RUST
 ** INTERPRETED LANGUAGE
 *** BASH
