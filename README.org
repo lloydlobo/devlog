@@ -78,6 +78,24 @@ ls *.c | entr gcc main.c -o main
 #!/usr/bin/env bash
 ls *.c | entr make main
 #+end_src
+**** How to use entr?
+https://stackoverflow.com/questions/66857291/how-to-execute-a-shell-script-when-a-file-changes
+
+- You first list out the files that you are watching, then pipe the list into the entr command.
+  - Basically, if you have a example.txt file and you want to monitor it and execute a command whenever it is changed, use this command.
+
+#+begin_src shell
+#!/usr/bin/env bash
+ls example.txt | entr echo "watching..."
+#+end_src
+
+- Another basic usage is that you first define your bash script and make it executable, then run this command.
+
+#+begin_src shell
+#!/usr/bin/env bash
+find . -type f | entr "./run.sh"
+#+end_src
+- find . -type f returns a list of files inside the current directory recursively. The result is then pipe into the entr command, executing the script run.sh.
 *** Flags
 **** -p | Postpones the first execution of the utility until a file is modified.
 ***** Run a command with the changed file (`/_`) as an argument:
@@ -625,6 +643,35 @@ exec.Command(command, argsSlice)
 Output:
 Linux x86_64
 #+end_src
+**** Web Development
+***** GoWebByExamples
+https://gowebexamples.com/
+**** Pointers
+***** Derefrencing slice pointer for indexing. (*p)[index]
+https://stackoverflow.com/a/51087975
+****** Write (*p) to dereference the pointer p:
+#+begin_src go
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    txs := make([]string, 2)
+    txs[0] = "A"
+    p := &txs
+    fmt.Println((*p)[0])
+}
+#+end_src
+Playground: https://play.golang.org/p/6Ex-3jtmw44
+
+Output:
+#+begin_src shell
+A
+#+end_src
+
+
 
 *** RUST
 ** INTERPRETED LANGUAGE
@@ -730,7 +777,6 @@ CTRL-[      # Escape or C-[ or jk or jj.
 # Next Press:
 @n          # Shift-2 or `@` and `n` to apply macro changes on each keypress.
 #+end_example
-
 
 *** VS CODE
 * unix
