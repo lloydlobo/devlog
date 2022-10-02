@@ -15,6 +15,7 @@
   - [[#nodejs][NODEJS]]
 - [[#best-practices][best practices]]
   - [[#practical-go-real-world-advice-for-writing-maintainable-go-programs][Practical Go: Real world advice for writing maintainable Go programs]]
+  - [[#httpdevscloudimmunitycomgotchas-and-common-mistakes-in-go-golang][http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/]]
 - [[#command-line-interface][command line interface]]
   - [[#command][COMMAND]]
 - [[#database][database]]
@@ -147,6 +148,7 @@ https://dave.cheney.net/practical-go/presentations/qcon-china.html
 **** 8.1. Keep yourself busy or do the work yourself
 **** 8.2. Leave concurrency to the caller
 **** 8.3. Never start a goroutine without knowning when it will stop
+** http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/
 * command line interface
 ** COMMAND
 *** GIT
@@ -670,8 +672,82 @@ Output:
 #+begin_src shell
 A
 #+end_src
+**** Gotchas, Common mistakes.
+- http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/
+***** Level 0: Total Beginner:
 
+Opening Brace Can't Be Placed on a Separate Line
+Unused Variables
+Unused Imports
+Short Variable Declarations Can Be Used Only Inside Functions
+Redeclaring Variables Using Short Variable Declarations
+Can't Use Short Variable Declarations to Set Field Values
+Accidental Variable Shadowing
+Can't Use "nil" to Initialize a Variable Without an Explicit Type
+Using "nil" Slices and Maps
+Map Capacity
+Strings Can't Be "nil"
+Array Function Arguments
+Unexpected Values in Slice and Array "range" Clauses
+Slices and Arrays Are One-Dimensional
+Accessing Non-Existing Map Keys
+Strings Are Immutable
+Conversions Between Strings and Byte Slices
+Strings and Index Operator
+Strings Are Not Always UTF8 Text
+String Length
+Missing Comma In Multi-Line Slice/Array/Map Literals
+log.Fatal and log.Panic Do More Than Log
+Built-in Data Structure Operations Are Not Synchronized
+Iteration Values For Strings in "range" Clauses
+Iterating Through a Map Using a "for range" Clause
+Fallthrough Behavior in "switch" Statements
+Increments and Decrements
+Bitwise NOT Operator
+Operator Precedence Differences
+Unexported Structure Fields Are Not Encoded
+App Exits With Active Goroutines
+Sending to an Unbuffered Channel Returns As Soon As the Target Receiver Is Ready
+Sending to an Closed Channel Causes a Panic
+Using "nil" Channels
+Methods with Value Receivers Can't Change the Original Value
+***** Level 1: Intermediate Beginner:
 
+Closing HTTP Response Body
+Closing HTTP Connections
+JSON Encoder Adds a Newline Character
+JSON Package Escapes Special HTML Characters in Keys and String Values
+Unmarshalling JSON Numbers into Interface Values
+JSON String Values Will Not Be Ok with Hex or Other non-UTF8 Escape Sequences
+Comparing Structs, Arrays, Slices, and Maps
+Recovering From a Panic
+Updating and Referencing Item Values in Slice, Array, and Map "for range" Clauses
+"Hidden" Data in Slices
+Slice Data Corruption
+"Stale" Slices
+Type Declarations and Methods
+Breaking Out of "for switch" and "for select" Code Blocks
+Iteration Variables and Closures in "for" Statements
+Deferred Function Call Argument Evaluation
+Deferred Function Call Execution
+Failed Type Assertions
+Blocked Goroutines and Resource Leaks
+Same Address for Different Zero-sized Variables
+The First Use of iota Doesn't Always Start with Zero
+***** Level 2: Advanced Beginner:
+
+Using Pointer Receiver Methods On Value Instances
+Updating Map Value Fields
+"nil" Interfaces and "nil" Interfaces Values
+Stack and Heap Variables
+GOMAXPROCS, Concurrency, and Parallelism
+Read and Write Operation Reordering
+Preemptive Scheduling
+Cgo (aka Brave Beginner):
+
+Import C and Multiline Import Blocks
+No blank lines Between Import C and Cgo Comments
+Can't Call C Functions with Variable Arguments
 
 *** RUST
 ** INTERPRETED LANGUAGE
