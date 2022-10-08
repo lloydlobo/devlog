@@ -415,6 +415,15 @@ fd --extension js
 # qutebrowser/greasemonkey/darkreader.js
 #+end_src
 
+#+RESULTS:
+
+**** cd
+Go to current directory in tmux panes
+#+begin_src shell
+pwd | xclip -i      # pane1: copy present working directory path.
+cd (xclip)          # pane2: change directory to pasted path.
+#+end_src
+
 * database
 ** PARADIGMS
 *** NOSQL
